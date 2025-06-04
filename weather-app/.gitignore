@@ -1,0 +1,33 @@
+# Node modules (rất nặng, không cần push)
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# dotenv file (thường chứa thông tin nhạy cảm)
+.env
+.env.* 
+
+# VS Code settings
+.vscode/
+
+# Mac system files
+.DS_Store
+
+# Optional: lock files (chỉ khi không muốn quản lý cụ thể)
+# package-lock.json
+# yarn.lock
+
+# Coverage reports (nếu có test)
+coverage/
+
+# IDE or OS-specific
+.idea/
+*.swp
