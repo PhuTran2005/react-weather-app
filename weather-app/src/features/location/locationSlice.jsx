@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useReducer } from "react";
 
 const locationSlice = createSlice({
   // counterSlice.js
@@ -6,10 +7,14 @@ const locationSlice = createSlice({
   name: "location", // Tên slice (dùng trong Redux DevTools, action types,...)
 
   initialState: {
-    value: null, // State ban đầu (có thể là object, array, số,...)
+    data: null, // State ban đầu (có thể là object, array, số,...)
   },
 
-  reducers: {},
+  reducers: {
+    setWeatherData: (state, action) => {
+      state.data = action.payload;
+    },
+  },
 });
 
 // 👉 Xuất action creators

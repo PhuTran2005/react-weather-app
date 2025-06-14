@@ -31,3 +31,5 @@ coverage/
 # IDE or OS-specific
 .idea/
 *.swp
+.env
+
