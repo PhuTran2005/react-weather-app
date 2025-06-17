@@ -252,31 +252,89 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
       ))}
 
       {/* Hiệu ứng ánh nắng */}
-      {weatherCondition.includes("clear") ||
-        (weatherCondition.includes("sunny") && (
-          <>
-            {/* Mặt trời */}
-            <div className="pointer-events-none absolute top-20 right-9 w-14 h-14 bg-yellow-400 rounded-full opacity-80 animate-pulse z-20"></div>
-            <div className="pointer-events-none absolute top-[75px] right-[25px] w-20 h-20 bg-yellow-300 rounded-full opacity-40 animate-ping z-10"></div>
+      {(weatherCondition.includes("day") ||
+        weatherCondition.includes("sun")) && (
+        <>
+          {/* Mặt trời */}
+          <div className="pointer-events-none absolute top-20 right-9 w-14 h-14 bg-yellow-400 rounded-full opacity-80 animate-pulse z-20"></div>
+          <div className="pointer-events-none absolute top-[75px] right-[25px] w-20 h-20 bg-yellow-300 rounded-full opacity-40 animate-ping z-10"></div>
 
-            {/* Container quay các tia nắng */}
-            <div
-              className="pointer-events-none absolute top-20 right-8 w-16 h-16 animate-spin-slow z-10 origin-center"
-              style={{ transformOrigin: "center center" }}
-            >
-              {[...Array(8)].map((_, i) => (
-                <div
-                  key={i}
-                  className="pointer-events-none absolute left-1/2 top-1/4 w-0.5 h-5 bg-yellow-300 opacity-60"
-                  style={{
-                    transform: `rotate(${i * 45}deg) translateY(-45px)`,
-                    transformOrigin: "center bottom",
-                  }}
-                />
-              ))}
-            </div>
-          </>
-        ))}
+          {/* Container quay các tia nắng */}
+          <div
+            className="pointer-events-none absolute top-20 right-8 w-16 h-16 animate-spin-slow z-10 origin-center"
+            style={{ transformOrigin: "center center" }}
+          >
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="pointer-events-none absolute left-1/2 top-1/4 w-0.5 h-5 bg-yellow-300 opacity-60"
+                style={{
+                  transform: `rotate(${i * 45}deg) translateY(-45px)`,
+                  transformOrigin: "center bottom",
+                }}
+              />
+            ))}
+          </div>
+        </>
+      )}
+      {/* Hiệu ứng mặt trăng */}
+      {(weatherCondition.includes("night") ||
+        weatherCondition.includes("moon")) && (
+        <>
+          {/* Mặt trăng chính */}
+          <div className="pointer-events-none absolute top-20 right-9 w-14 h-14 bg-gray-100 rounded-full opacity-90 animate-pulse z-20 shadow-lg shadow-gray-300/50">
+            {/* Miệng núi trên mặt trăng */}
+            <div className="absolute top-2 left-3 w-2 h-2 bg-gray-300 rounded-full opacity-60"></div>
+            <div className="absolute top-4 right-2 w-1.5 h-1.5 bg-gray-300 rounded-full opacity-50"></div>
+            <div className="absolute bottom-3 left-2 w-1 h-1 bg-gray-300 rounded-full opacity-40"></div>
+          </div>
+
+          {/* Halo ánh sáng mặt trăng */}
+          <div className="pointer-events-none absolute top-[70px] right-[25px] w-20 h-20 bg-blue-200 rounded-full opacity-30 animate-ping z-10"></div>
+          <div className="pointer-events-none absolute top-[60px] right-[17px] w-24 h-24 bg-blue-100 rounded-full opacity-20 animate-pulse z-5"></div>
+
+          {/* Container quay các tia sáng mặt trăng */}
+          {/* <div
+            className="pointer-events-none absolute top-20 right-8 w-16 h-16 animate-spin-slow z-10 origin-center"
+            style={{
+              transformOrigin: "center center",
+              animationDuration: "20s", // Quay chậm hơn mặt trời
+            }}
+          >
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className="pointer-events-none absolute left-1/2 top-1/4 w-0.5 h-4 bg-blue-200 opacity-50"
+                style={{
+                  transform: `rotate(${i * 30}deg) translateY(-45px)`,
+                  transformOrigin: "center bottom",
+                }}
+              />
+            ))}
+          </div> */}
+
+          {/* Các ngôi sao nhỏ xung quanh */}
+          <div className="pointer-events-none absolute top-[200px] right-20 w-1 h-1 bg-white rounded-full opacity-80 animate-pulse z-20"></div>
+          <div
+            className="pointer-events-none absolute top-[100px] right-14 w-0.5 h-0.5 bg-blue-100 rounded-full opacity-70 animate-pulse z-20"
+            style={{ animationDelay: "0.5s" }}
+          ></div>
+          <div
+            className="pointer-events-none absolute top-10 right-32 w-0.5 h-0.5 bg-white rounded-full opacity-60 animate-pulse z-20"
+            style={{ animationDelay: "1s" }}
+          ></div>
+          <div
+            className="pointer-events-none absolute top-[150px] right-10 w-1 h-1 bg-blue-200 rounded-full opacity-75 animate-pulse z-20"
+            style={{ animationDelay: "1.5s" }}
+          ></div>
+
+          {/* Hiệu ứng ánh sáng mặt trăng lan tỏa */}
+          <div
+            className="pointer-events-none absolute top-16 right-4 w-32 h-32 bg-gradient-radial from-blue-100/20 via-blue-50/10 to-transparent rounded-full opacity-60 animate-pulse z-5"
+            style={{ animationDuration: "4s" }}
+          ></div>
+        </>
+      )}
       {/* Hiệu ứng sương mù */}
       {(weatherCondition.includes("mist") ||
         weatherCondition.includes("fog")) && (

@@ -6,7 +6,8 @@ export const getWeather = async (location = "ha noi", numsForcastDay = 2) => {
   return response;
 };
 export const getWeatherTest = async () => {
-  const WeatherAPI_DOMAIN = `https://maps.openweathermap.org/maps/2.0/weather/1h/APM/{1}/{1}/{4}?date=1618898990&appid=${weatherKey}`;
+  const WeatherAPI_DOMAIN = `https://api.openweathermap.org/data/2.5/forecast?q=Ho%20Chi%20Minh&units=metric&appid=${weatherKey}
+`;
   const response = await Get(WeatherAPI_DOMAIN);
   return response;
 };

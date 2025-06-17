@@ -26,7 +26,7 @@ const WeatherDateTime = () => {
           }}
         >
           {weatherData
-            ? changeStandardDateTime(weatherData.location.localtime) +
+            ? changeStandardDateTime(weatherData.current.last_updated) +
               (!weatherData.current.is_day ? ", Night" : ", Day")
             : "day/month/year, hour:minute"}
         </strong>

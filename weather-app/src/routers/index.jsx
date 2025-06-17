@@ -3,6 +3,7 @@ import { useRoutes } from "react-router-dom";
 import Home from "../Pages/Home";
 import Weather from "../Pages/Weather";
 import NotFound from "../Pages/NotFound";
+import WeatherDashboard from "../Pages/WeatherDashboard";
 const AllRouters = () => {
   const routers = useRoutes([
     {
@@ -11,7 +12,16 @@ const AllRouters = () => {
     },
     {
       path: "weather-app",
-      element: <Weather />,
+      children: [
+        {
+          index: true,
+          element: <Weather />,
+        },
+        {
+          path: "dashboard",
+          element: <WeatherDashboard />,
+        },
+      ],
     },
     { path: "*", element: <NotFound /> },
   ]);

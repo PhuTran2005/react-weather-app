@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setWeatherData } from "../../features/Weather/weatherSlice";
 
 const WeatherSearch = (prop) => {
-  const { generateRandomVal, turnOff, turnOn } = prop;
+  const { generateRandomVal, turnOff, turnOn, toggleSidebar } = prop;
   const [query, setQuery] = useState(""); // giá trị tìm kiếm kiếm
   const [suggestions, setSuggestions] = useState([]); // arr đề xuất địa điểm
   const [isSearch, setIsSearch] = useState(false); // var check có đang tìm kiếmm hay ko
@@ -138,6 +138,7 @@ const WeatherSearch = (prop) => {
         />
         <button
           ref={menuBtn}
+          onClick={() => toggleSidebar()}
           className="weatherApp__main__search--menu px-8 py-3 bg-transparent border-2 border-cyan-400 text-cyan-400 rounded-lg font-semibold hover:bg-cyan-400 hover:text-black transition-all duration-300 hover:shadow-cyan-400/50 hover:shadow-lg animate-pulse"
         >
           <AlignJustify

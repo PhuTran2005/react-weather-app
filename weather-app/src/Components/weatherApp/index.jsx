@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import WeatherAnimation from "../Animations/WeatherAnimation";
 import NightEffect from "../Mode/Night";
 import DayEffect from "../Mode/Day";
+import defaultImg from "../../assets/img/defaut.png";
 import {
   CloudyLoading,
   RainLoading,
@@ -16,10 +17,17 @@ import {
   ThunderLoading,
   WindLoading,
 } from "../Loading";
+import SlidingSidebar from "../SideBar";
+import ModernSidebar from "../SideBar";
 const WeatherApp = () => {
   const weatherData = useSelector((state) => state.weather.value);
+  console.log(weatherData);
   const [isLoading, setIsLoading] = useState(false);
   const [randomVal, setRandomVal] = useState(0);
+  const [openSidebar, setOpenSidebar] = useState(false);
+  const toggleSidebar = () => {
+    setOpenSidebar(!openSidebar);
+  };
   const generateRandomVal = () => {
     setRandomVal(Math.floor(Math.random() * LoadingAnimation.length));
   };
@@ -37,15 +45,43 @@ const WeatherApp = () => {
     <WindLoading />,
     <SnowLoading />,
   ];
+  const footerContent = (
+    <div className="text-center">
+      <p className="text-xs opacity-75">© 2025 Weather app</p>
+      <p className="text-xs opacity-50">Version 1.0.0</p>
+    </div>
+  );
+  const sampleUser = {
+    name: weatherData ? weatherData.current.condition.text : "Condition",
+    avatar: weatherData ? weatherData.current.condition.icon : defaultImg,
+  };
+
   useEffect(() => {}, []);
   return (
     <>
       <div className="weatherApp ">
+        <ModernSidebar
+          isOpen={openSidebar}
+          onClose={() => toggleSidebar()}
+          title="Condition"
+          user={sampleUser}
+          // menuItems={}
+          theme={"light"}
+          position={"right"}
+          showSearch={true}
+          footer={footerContent}
+        />
         <WeatherAnimation
           key={weatherData?.location?.name || "default"}
           weatherCondition={
             !isLoading && weatherData
-              ? weatherData.current.condition.text.toLowerCase()
+              ? weatherData.current.condition.text
+                  .toLowerCase()
+                  .includes("clear")
+                ? weatherData.current.is_day
+                  ? "sun"
+                  : "moon"
+                : weatherData.current.condition.text.toLowerCase()
               : "none"
           }
         >
@@ -62,6 +98,7 @@ const WeatherApp = () => {
               generateRandomVal={generateRandomVal}
               turnOn={turnOnLoading}
               turnOff={turnOffLoading}
+              toggleSidebar={toggleSidebar}
             />
             <WeatherDateTime />
             <WeatherContent />

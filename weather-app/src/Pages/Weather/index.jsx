@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import ClickSpark from "../../Components/Animations/ClickSpark";
 import Aurora from "../../Components/Background/Aurora";
 import WeatherApp from "../../Components/weatherApp";
@@ -16,6 +17,7 @@ const Weather = () => {
         />
       )}
       <WeatherApp />
+      <Outlet />
     </>
   );
 };
