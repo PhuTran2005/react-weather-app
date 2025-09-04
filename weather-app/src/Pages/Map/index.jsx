@@ -15,6 +15,7 @@ import WeatherMapSidebar from "../../Components/SideBar/sidebar-map";
 import { getWeatherbyLocation } from "../../services/weatherService";
 import WeatherPanel from "../../Components/weatherPanel";
 import MarkerClusterGroup from "react-leaflet-markercluster";
+import { SunLoading } from "../../Components/Loading";
 
 // Fix lỗi icon không hiện trên React
 const customIcon = new L.Icon({
@@ -24,20 +25,10 @@ const customIcon = new L.Icon({
   iconAnchor: [12, 41],
 });
 
-// Component listen zoom
-function ZoomCities({ setZoom }) {
-  useMapEvents({
-    zoomend: (e) => {
-      setZoom(e.target.getZoom());
-    },
-  });
-  return null;
-}
-
 const API_KEY = import.meta.env.VITE_OPEN_WEATHER_API_KEY;
 const Map = () => {
   const [cities, setCities] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [locationData, setLocationData] = useState(null);
   const [zoom, setZoom] = useState(2);
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -49,7 +40,15 @@ const Map = () => {
   });
   const [opacity, setOpacity] = useState(0.6);
   const [citiesVisible, setCitiesVisible] = useState(true);
-
+  // Component listen zoom
+  function ZoomCities({ setZoom }) {
+    useMapEvents({
+      zoomend: (e) => {
+        setZoom(e.target.getZoom());
+      },
+    });
+    return null;
+  }
   const toggleSidebar = () => {
     setOpenSidebar(!openSidebar);
   };
@@ -57,9 +56,11 @@ const Map = () => {
     useMapEvents({
       async click(e) {
         console.log("Map clicked at:", e.latlng);
+        setIsLoading(true);
         const data = await getWeatherbyLocation(e.latlng.lat, e.latlng.lng);
         console.log("Weather data:", data);
         setLocationData(data);
+        setIsLoading(false);
       },
     });
     return null;
@@ -75,12 +76,12 @@ const Map = () => {
       const data = await res.json();
       setCities(data);
     };
-
     fetchCities();
   }, [zoom]);
 
   return (
     <>
+      {isLoading && <SunLoading />}
       <div className="map-controls">
         <button onClick={() => setOpenSidebar(!openSidebar)}>
           Toggle Sidebar
