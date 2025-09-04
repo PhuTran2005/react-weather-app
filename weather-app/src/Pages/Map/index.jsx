@@ -37,6 +37,7 @@ function ZoomCities({ setZoom }) {
 const API_KEY = import.meta.env.VITE_OPEN_WEATHER_API_KEY;
 const Map = () => {
   const [cities, setCities] = useState([]);
+
   const [locationData, setLocationData] = useState(null);
   const [zoom, setZoom] = useState(2);
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -102,7 +103,8 @@ const Map = () => {
           />
         )}
         <MarkerClusterGroup chunkedLoading>
-          {cities &&
+          {citiesVisible &&
+            cities &&
             cities.map((city, i) => (
               <Marker key={i} position={[city.lat, city.lng]} icon={customIcon}>
                 <Popup>
