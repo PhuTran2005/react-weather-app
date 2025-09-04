@@ -1,9 +1,9 @@
 import DefaultLayout from "../Components/defaultLayout";
 import { useRoutes } from "react-router-dom";
-import Home from "../Pages/Home";
 import Weather from "../Pages/Weather";
 import NotFound from "../Pages/NotFound";
 import WeatherDashboard from "../Pages/WeatherDashboard";
+import Map from "../Pages/Map";
 const AllRouters = () => {
   const routers = useRoutes([
     {
@@ -20,6 +20,15 @@ const AllRouters = () => {
         {
           path: "dashboard",
           element: <WeatherDashboard />,
+        },
+      ],
+    },
+    {
+      path: "weather-map",
+      children: [
+        {
+          index: true,
+          element: <Map />,
         },
       ],
     },

@@ -1,0 +1,65 @@
+@import "leaflet/dist/leaflet.css";
+.map-type-control {
+  border-radius: 10px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  padding: 5px;
+  min-width: 300px;
+  .opacity-control {
+    padding: 0 10px;
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+.map-layers-control {
+  border-radius: 10px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 5px;
+  button {
+    border-radius: 10px;
+    font-size: 12.4px;
+    margin: 4px 0;
+    text-align: left;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    &:hover {
+      background: darken(#eee, 5%);
+    }
+    &.active {
+      background: darken(#007bff, 5%);
+      color: white;
+    }
+  }
+}
+.map-controls {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      background: darken(#007bff, 5%);
+    }
+  }
+}

@@ -42,6 +42,12 @@ $large: 1200px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  @media (max-width: $mobile) {
+    padding: 14px 28px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 280px;
+  }
 
   @if $hover-bg {
     &:hover {
@@ -53,13 +59,6 @@ $large: 1200px;
       transform: translateY(-2px);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     }
-  }
-
-  @media (max-width: $mobile) {
-    padding: 14px 28px;
-    font-size: 1rem;
-    width: 100%;
-    max-width: 280px;
   }
 }
 
@@ -957,9 +956,7 @@ $large: 1200px;
       color: white;
     }
 
-    .section-description,
-    .feature-title,
-    .feature-description {
+    .section-description {
       color: rgba(255, 255, 255, 0.9);
     }
   }

@@ -1,0 +1,303 @@
+[
+  {
+    "city": "Tokyo",
+    "lat": 35.687,
+    "lng": 139.7495,
+    "country": "Japan",
+    "population": 37785000
+  },
+  {
+    "city": "Jakarta",
+    "lat": -6.175,
+    "lng": 106.8275,
+    "country": "Indonesia",
+    "population": 33756000
+  },
+  {
+    "city": "Delhi",
+    "lat": 28.61,
+    "lng": 77.23,
+    "country": "India",
+    "population": 32226000
+  },
+  {
+    "city": "Guangzhou",
+    "lat": 23.13,
+    "lng": 113.26,
+    "country": "China",
+    "population": 26940000
+  },
+  {
+    "city": "Mumbai",
+    "lat": 19.0761,
+    "lng": 72.8775,
+    "country": "India",
+    "population": 24973000
+  },
+  {
+    "city": "Manila",
+    "lat": 14.5958,
+    "lng": 120.9772,
+    "country": "Philippines",
+    "population": 24922000
+  },
+  {
+    "city": "Shanghai",
+    "lat": 31.2286,
+    "lng": 121.4747,
+    "country": "China",
+    "population": 24073000
+  },
+  {
+    "city": "São Paulo",
+    "lat": -23.5504,
+    "lng": -46.6339,
+    "country": "Brazil",
+    "population": 23086000
+  },
+  {
+    "city": "Seoul",
+    "lat": 37.5667,
+    "lng": 126.9833,
+    "country": "Korea, South",
+    "population": 23016000
+  },
+  {
+    "city": "Mexico City",
+    "lat": 19.4333,
+    "lng": -99.1333,
+    "country": "Mexico",
+    "population": 21804000
+  },
+  {
+    "city": "Kolkāta",
+    "lat": 22.5675,
+    "lng": 88.37,
+    "country": "India",
+    "population": 21747000
+  },
+  {
+    "city": "Cairo",
+    "lat": 30.0444,
+    "lng": 31.2358,
+    "country": "Egypt",
+    "population": 20296000
+  },
+  {
+    "city": "Karachi",
+    "lat": 24.86,
+    "lng": 67.01,
+    "country": "Pakistan",
+    "population": 20249000
+  },
+  {
+    "city": "Dhaka",
+    "lat": 23.7289,
+    "lng": 90.3944,
+    "country": "Bangladesh",
+    "population": 19134000
+  },
+  {
+    "city": "New York",
+    "lat": 40.6943,
+    "lng": -73.9249,
+    "country": "United States",
+    "population": 18832416
+  },
+  {
+    "city": "Beijing",
+    "lat": 39.9067,
+    "lng": 116.3975,
+    "country": "China",
+    "population": 18522000
+  },
+  {
+    "city": "Bangkok",
+    "lat": 13.7525,
+    "lng": 100.4942,
+    "country": "Thailand",
+    "population": 18007000
+  },
+  {
+    "city": "Shenzhen",
+    "lat": 22.5415,
+    "lng": 114.0596,
+    "country": "China",
+    "population": 17619000
+  },
+  {
+    "city": "Moscow",
+    "lat": 55.7506,
+    "lng": 37.6175,
+    "country": "Russia",
+    "population": 17332000
+  },
+  {
+    "city": "Buenos Aires",
+    "lat": -34.6036,
+    "lng": -58.3814,
+    "country": "Argentina",
+    "population": 16710000
+  },
+  {
+    "city": "Lagos",
+    "lat": 6.455,
+    "lng": 3.3841,
+    "country": "Nigeria",
+    "population": 16637000
+  },
+  {
+    "city": "Bangalore",
+    "lat": 12.9789,
+    "lng": 77.5917,
+    "country": "India",
+    "population": 15386000
+  },
+  {
+    "city": "Ho Chi Minh City",
+    "lat": 10.7756,
+    "lng": 106.7019,
+    "country": "Vietnam",
+    "population": 15136000
+  },
+  {
+    "city": "Ōsaka",
+    "lat": 34.6939,
+    "lng": 135.5022,
+    "country": "Japan",
+    "population": 15126000
+  },
+  {
+    "city": "Chengdu",
+    "lat": 30.66,
+    "lng": 104.0633,
+    "country": "China",
+    "population": 14645000
+  },
+  {
+    "city": "Istanbul",
+    "lat": 41.0136,
+    "lng": 28.955,
+    "country": "Turkey",
+    "population": 14441000
+  },
+  {
+    "city": "Tehran",
+    "lat": 35.6889,
+    "lng": 51.3897,
+    "country": "Iran",
+    "population": 14148000
+  },
+  {
+    "city": "Kinshasa",
+    "lat": -4.3219,
+    "lng": 15.3119,
+    "country": "Congo (Kinshasa)",
+    "population": 12836000
+  },
+  {
+    "city": "Rio de Janeiro",
+    "lat": -22.9111,
+    "lng": -43.2056,
+    "country": "Brazil",
+    "population": 12592000
+  },
+  {
+    "city": "Chennai",
+    "lat": 13.0825,
+    "lng": 80.275,
+    "country": "India",
+    "population": 12395000
+  },
+  {
+    "city": "Xi’an",
+    "lat": 34.2611,
+    "lng": 108.9422,
+    "country": "China",
+    "population": 12328000
+  },
+  {
+    "city": "Lahore",
+    "lat": 31.5497,
+    "lng": 74.3436,
+    "country": "Pakistan",
+    "population": 12306000
+  },
+  {
+    "city": "Chongqing",
+    "lat": 29.5637,
+    "lng": 106.5504,
+    "country": "China",
+    "population": 12135000
+  },
+  {
+    "city": "Los Angeles",
+    "lat": 34.1141,
+    "lng": -118.4068,
+    "country": "United States",
+    "population": 11885717
+  },
+  {
+    "city": "London",
+    "lat": 51.5072,
+    "lng": -0.1275,
+    "country": "United Kingdom",
+    "population": 11262000
+  },
+  {
+    "city": "Paris",
+    "lat": 48.8567,
+    "lng": 2.3522,
+    "country": "France",
+    "population": 11060000
+  },
+  {
+    "city": "Linyi",
+    "lat": 35.1038,
+    "lng": 118.3564,
+    "country": "China",
+    "population": 10820000
+  },
+  {
+    "city": "Dongguan",
+    "lat": 23.021,
+    "lng": 113.752,
+    "country": "China",
+    "population": 10646000
+  },
+  {
+    "city": "Baoding",
+    "lat": 38.874,
+    "lng": 115.464,
+    "country": "China",
+    "population": 10546831
+  },
+  {
+    "city": "Hyderābād",
+    "lat": 17.3617,
+    "lng": 78.4747,
+    "country": "India",
+    "population": 10494000
+  },
+  {
+    "city": "Tianjin",
+    "lat": 39.1336,
+    "lng": 117.2054,
+    "country": "China",
+    "population": 10368000
+  },
+  {
+    "city": "Lima",
+    "lat": -12.06,
+    "lng": -77.0375,
+    "country": "Peru",
+    "population": 10320000
+  },
+  {
+    "city": "Wuhan",
+    "lat": 30.5934,
+    "lng": 114.3046,
+    "country": "China",
+    "population": 10251000
+  }
+]

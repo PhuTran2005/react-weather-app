@@ -45,7 +45,7 @@ const Home = () => {
       description:
         "Xem thông tin thời tiết chi tiết tại vị trí của bạn với độ chính xác cao",
       icon: Sun,
-      path: "/weather",
+      path: "/weather-app",
       gradient: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
       iconColor: "#ff7b3d",
     },
@@ -64,7 +64,7 @@ const Home = () => {
       title: "Bản Đồ Thời Tiết",
       description: "Xem bản đồ radar mưa và mây trực tiếp với công nghệ AI",
       icon: Globe,
-      path: "/radar",
+      path: "/weather-map",
       gradient: "linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)",
       iconColor: "#764ba2",
     },
@@ -86,7 +86,7 @@ const Home = () => {
       icon: MapPin,
       path: "/locations",
       gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-      iconColor: "#fa709a",
+      iconColor: "#red",
     },
     {
       id: "analytics",
@@ -108,7 +108,7 @@ const Home = () => {
 
   const testimonials = [
     {
-      name: "Nguyễn Văn An",
+      name: "Trần Văn Phú",
       role: "Nông dân",
       content:
         "Ứng dụng giúp tôi dự báo thời tiết chính xác, rất hữu ích cho việc canh tác.",
@@ -116,7 +116,7 @@ const Home = () => {
       avatar: "👨‍🌾",
     },
     {
-      name: "Trần Thị Bình",
+      name: "Trần Ngọc Hoài",
       role: "Du lịch viên",
       content:
         "Giao diện đẹp, thông tin chi tiết. Không thể thiếu khi đi du lịch!",
@@ -124,7 +124,7 @@ const Home = () => {
       avatar: "✈️",
     },
     {
-      name: "Lê Minh Cường",
+      name: "Trần Thị Ngọc Quý",
       role: "Thủy thủ",
       content:
         "Cảnh báo thời tiết cực đoan rất kịp thời, giúp tôi tránh được nhiều rủi ro.",
@@ -249,7 +249,7 @@ const Home = () => {
               <p className="feature-description">{feature.description}</p>
 
               <div className="feature-link">
-                <span>Khám phá ngay</span>
+                <a href={feature.path}>Khám phá ngay</a>
                 <ChevronRight
                   size={16}
                   style={{

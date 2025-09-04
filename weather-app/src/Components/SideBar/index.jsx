@@ -102,7 +102,7 @@ const ModernSidebar = memo(
     };
 
     const currentTheme = themes[theme];
-    const slideDirection = position === "right" ? "100%" : "-100%";
+    // const slideDirection = position === "right" ? "100%" : "-100%";
 
     if (!isOpen) return null;
 
@@ -185,11 +185,12 @@ const ModernSidebar = memo(
                   <a
                     key={item.id}
                     onClick={() => navigate(item.href)}
+                    data-sidebar-item
                     className={`
                     flex items-center justify-between px-4 py-3 rounded-lg 
                     transition-all duration-200 group
                     ${currentTheme.menuItem}
-                    hover:scale-105 hover:shadow-lg
+                    hover:scale-105 hover:shadow-lg cursor-pointer
                   `}
                     style={{
                       animationName: isOpen ? "slideInRight" : "none",
