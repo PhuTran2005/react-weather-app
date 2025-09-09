@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Crosshair,
   Droplets,
   Eye,
   Gauge,
@@ -9,8 +10,37 @@ import {
   X,
 } from "lucide-react";
 import "./weatherPanel.scss";
-
+import { useDispatch } from "react-redux";
+import {
+  getAirPollutionbyLocation,
+  getWeatherbyLocation,
+} from "../../services/weatherService";
+import { getImageFromUnsplash } from "../../services/locationService";
+import { setWeatherData } from "../../features/Weather/weatherSlice";
+import { useNavigate } from "react-router-dom";
 const WeatherPanel = ({ locationData, onSetLocationData }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleNavigate = async (lat, lon) => {
+    try {
+      const data = await getWeatherbyLocation(lat, lon);
+      const locationImg = await getImageFromUnsplash(data.name);
+      const airPollutionData = await getAirPollutionbyLocation(
+        data.location.lat,
+        data.location.lon
+      );
+      dispatch(
+        setWeatherData({
+          ...data,
+          locationImg,
+          airPollution: airPollutionData.list[0],
+        })
+      );
+      navigate("/weather-app"); // chuyển hướng sau khi xong
+    } catch (error) {
+      console.error("Error fetching weather data:", error);
+    }
+  };
   console.log("Rendering WeatherPanel with data:", locationData);
   return (
     <div className="info-panel" id="infoPanel">
@@ -23,13 +53,22 @@ const WeatherPanel = ({ locationData, onSetLocationData }) => {
           <p className="location-subtitle">
             {locationData.country || "Vietnam"}
           </p>
+          <button
+            className="navigate-btn"
+            onClick={() =>
+              handleNavigate(locationData.coord.lat, locationData.coord.lon)
+            }
+          >
+            <Crosshair size={20} />
+            Use this location
+          </button>
         </div>
         <button
           onClick={() => onSetLocationData(null)}
           className={`
               p-2 rounded-full transition-all duration-200 
               text-white hover:text-white hover:bg-gray-800
-              hover:scale-110 active:scale-95
+              hover:scale-110 active:scale-95 z-10
             `}
         >
           <X size={20} />

@@ -21,7 +21,6 @@ import SlidingSidebar from "../SideBar";
 import ModernSidebar from "../SideBar";
 const WeatherApp = () => {
   const weatherData = useSelector((state) => state.weather.value);
-  console.log(weatherData);
   const [isLoading, setIsLoading] = useState(false);
   const [randomVal, setRandomVal] = useState(0);
   const [openSidebar, setOpenSidebar] = useState(false);

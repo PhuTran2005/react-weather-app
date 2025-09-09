@@ -1,5 +1,6 @@
 import React, { memo, useState } from "react";
 import {
+  Currency,
   X,
   Home,
   User,
@@ -23,6 +24,9 @@ import {
   Shield,
   Zap,
   Bookmark,
+  Map,
+  Wind,
+  MessageCircleWarning,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -53,24 +57,36 @@ const ModernSidebar = memo(
         href: "/weather-app/dashboard",
         badge: null,
       },
-      { id: 2, label: "Profile", icon: User, href: "/profile", badge: null },
       {
-        id: 3,
-        label: "Products",
-        icon: Package,
-        href: "/products",
-        badge: "12",
-      },
-      { id: 4, label: "Messages", icon: Mail, href: "/messages", badge: "3" },
-      { id: 5, label: "Contact", icon: Phone, href: "/contact", badge: null },
-      {
-        id: 6,
-        label: "Settings",
-        icon: Settings,
-        href: "/settings",
+        id: 2,
+        label: "Current location",
+        icon: User,
+        href: "/weather-app/current-location",
         badge: null,
       },
-      { id: 7, label: "About", icon: Info, href: "/about", badge: null },
+
+      {
+        id: 3,
+        label: "Map",
+        icon: Map,
+        href: "/weather-app/map",
+        badge: null,
+      },
+      {
+        id: 4,
+        label: "Air Pollution",
+        icon: Wind,
+        href: "/weather-app/air-pollution",
+        badge: null,
+      },
+      {
+        id: 5,
+        label: "Alerts",
+        icon: MessageCircleWarning,
+        href: "/weather-app/alerts",
+        badge: null,
+      },
+      { id: 6, label: "About", icon: Info, href: "/about", badge: null },
     ];
 
     const items = menuItems.length > 0 ? menuItems : defaultMenuItems;

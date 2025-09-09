@@ -7,7 +7,10 @@ import {
   getImageFromUnsplash,
   getLocation,
 } from "../../services/locationService";
-import { getWeather } from "../../services/weatherService";
+import {
+  getAirPollutionbyLocation,
+  getWeather,
+} from "../../services/weatherService";
 import { useDispatch, useSelector } from "react-redux";
 import { setWeatherData } from "../../features/Weather/weatherSlice";
 
@@ -36,7 +39,11 @@ const WeatherSearch = (prop) => {
     try {
       const data = await getWeather(val);
       const location = await getImageFromUnsplash(query);
-
+      const airPollutionData = await getAirPollutionbyLocation(
+        data.location.lat,
+        data.location.lon
+      );
+      console.log("Air Pollution Data:", airPollutionData);
       if (!data) {
         Swal.fire({
           title: "Erorr",
@@ -47,7 +54,13 @@ const WeatherSearch = (prop) => {
 
         return;
       }
-      dispatch(setWeatherData({ ...data, locationImg: location }));
+      dispatch(
+        setWeatherData({
+          ...data,
+          locationImg: location,
+          airPollution: airPollutionData.list[0],
+        })
+      );
     } catch (err) {
       Swal.fire({
         title: "Erorr",

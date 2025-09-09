@@ -25,13 +25,13 @@ import {
   Sunrise,
   Sunset,
 } from "lucide-react";
-import defaultImg from "../../assets/img/defaut.png";
+import defaultImg from "../../../assets/img/defaut.png";
 import "./WeatherDashboard.scss";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import EmptyState from "../../Components/Empty";
-import { changeStandardDateTime } from "../../helpers";
-
+import EmptyState from "../../../Components/Empty";
+import { changeStandardDateTime } from "../../../helpers";
+import { SunLoading } from "../../../Components/Loading";
 const WeatherDashboard = () => {
   const weatherData = useSelector((state) => state.weather.value);
   const [loading, setLoading] = useState(true);
@@ -101,14 +101,7 @@ const WeatherDashboard = () => {
   };
 
   if (loading) {
-    return (
-      <div className="weather-dashboard">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p className="loading-text">Loading weather data...</p>
-        </div>
-      </div>
-    );
+    return <SunLoading />;
   }
 
   const hourlyData = weatherData

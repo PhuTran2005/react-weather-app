@@ -37,7 +37,7 @@ export const SunLoading = () => (
         </div>
       </div>
     </div>
-    <p className="mt-4 text-orange-700 font-semibold">Đang tải dữ liệu ...</p>
+    <p className="mt-4 text-orange-700 font-semibold">Loading...</p>
   </div>
 );
 
@@ -78,9 +78,7 @@ export const RainLoading = () => (
       ))}
     </div>
 
-    <p className="mt-8 text-blue-100 font-semibold relative z-10">
-      Đang tải dữ liệu ...
-    </p>
+    <p className="mt-8 text-blue-100 font-semibold relative z-10">Loading...</p>
   </div>
 );
 
@@ -123,9 +121,7 @@ export const SnowLoading = () => (
       <div className="w-16 h-16 bg-white rounded-full border-2 border-blue-300"></div>
     </div>
 
-    <p className="mt-4 text-blue-700 font-semibold relative z-10">
-      Đang tải dữ liệu ...
-    </p>
+    <p className="mt-4 text-blue-700 font-semibold relative z-10">Loading...</p>
   </div>
 );
 
@@ -178,7 +174,7 @@ export const WindLoading = () => (
       ))}
     </div>
 
-    <p className="mt-8 text-teal-800 font-semibold">Đang tải dữ liệu ...</p>
+    <p className="mt-8 text-teal-800 font-semibold">Loading...</p>
   </div>
 );
 
@@ -224,7 +220,7 @@ export const ThunderLoading = () => {
           flash ? "text-gray-800" : "text-yellow-300"
         }`}
       >
-        Đang tải dữ liệu ...
+        Loading...
       </p>
     </div>
   );
