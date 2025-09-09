@@ -77,7 +77,7 @@ const WeatherCurrentLocation = () => {
           navigate("/weather-app"); // chuyển hướng sau khi xong
         }
       });
-    }
+    } // oce
   }, []);
 
   // Lấy weather data khi đã có location
