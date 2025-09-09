@@ -58,11 +58,25 @@ const WeatherCurrentLocation = () => {
             text: error.message,
             icon: "error",
             confirmButtonText: "OK",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate("/weather-app"); // chuyển hướng sau khi xong
+            }
           });
         }
       );
     } else {
-      console.error("Trình duyệt không hỗ trợ Geolocation");
+      Swal.fire({
+        title: "Error",
+        text: "Browser does not support Geolocation",
+        icon: "warning",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Navigate to home",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/weather-app"); // chuyển hướng sau khi xong
+        }
+      });
     }
   }, []);
 

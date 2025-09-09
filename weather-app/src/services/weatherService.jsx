@@ -83,7 +83,7 @@ export const getWeatherAlertbyLocation = async (lat, lng) => {
 };
 export const getAirPollutionbyLocation = async (lat, lng) => {
   try {
-    const WeatherAPI_DOMAIN = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lng}&appid=${weatherKey_open_weather}`;
+    const WeatherAPI_DOMAIN = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lng}&appid=${weatherKey_open_weather}`;
     const response = await fetch(WeatherAPI_DOMAIN);
     console.log("Fetch URL:", WeatherAPI_DOMAIN);
 
