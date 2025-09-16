@@ -41,7 +41,6 @@ const WeatherCurrentLocation = () => {
       setLocation(JSON.parse(saved));
       return;
     }
-
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -53,31 +52,41 @@ const WeatherCurrentLocation = () => {
           localStorage.setItem("my_location", JSON.stringify(coords));
         },
         (error) => {
+          console.warn("Geolocation error:", error);
+
+          let fallback = { lat: 21.0285, lng: 105.8542 }; // Hà Nội mặc định
+          setLocation(fallback);
+          localStorage.setItem("my_location", JSON.stringify(fallback));
+
           Swal.fire({
-            title: "Error",
-            text: error.message,
-            icon: "error",
+            title: "Không lấy được vị trí",
+            text: "Ứng dụng sẽ dùng vị trí mặc định.",
+            icon: "warning",
             confirmButtonText: "OK",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              navigate("/weather-app"); // chuyển hướng sau khi xong
-            }
+          }).then(() => {
+            navigate("/weather-app");
           });
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
         }
       );
     } else {
+      let fallback = { lat: 21.0285, lng: 105.8542 };
+      setLocation(fallback);
+      localStorage.setItem("my_location", JSON.stringify(fallback));
+
       Swal.fire({
-        title: "Error",
-        text: "Browser does not support Geolocation",
-        icon: "warning",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "Navigate to home",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/weather-app"); // chuyển hướng sau khi xong
-        }
+        title: "Trình duyệt không hỗ trợ",
+        text: "Ứng dụng sẽ dùng vị trí mặc định.",
+        icon: "info",
+        confirmButtonText: "OK",
+      }).then(() => {
+        navigate("/weather-app");
       });
-    } // oce
+    }
   }, []);
 
   // Lấy weather data khi đã có location
