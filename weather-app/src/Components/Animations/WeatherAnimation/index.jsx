@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "./WeatherAnimation.scss";
 import { useWindowSize } from "../../../helpers";
-// Component hiệu ứng thời tiết
+
+// Component hiệu ứng thời tiết mở rộng
 const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
   const [particles, setParticles] = useState([]);
   const [thunderFlash, setThunderFlash] = useState(false);
   const [lightningBolt, setLightningBolt] = useState(null);
   const [mistLayers, setMistLayers] = useState([]);
-  // Tạo particle (mưa/tuyết)
+  const [windEffect, setWindEffect] = useState(false);
+  const [sandParticles, setSandParticles] = useState([]);
+  const [leaves, setLeaves] = useState([]);
+
+  // Tạo particle (mưa/tuyết/mưa đá/blizzard)
   const createParticle = (type) => {
     const baseParticle = {
       id: Math.random(),
@@ -20,6 +25,7 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
     switch (type) {
       case "rain":
         return { ...baseParticle, width: 2, height: 10, color: "#3b82f6" };
+
       case "snow":
         return {
           ...baseParticle,
@@ -28,6 +34,7 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
           color: "#ffffff",
           duration: Math.random() * 2 + 2,
         };
+
       case "drizzle":
         return {
           ...baseParticle,
@@ -36,10 +43,84 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
           color: "#60a5fa",
           opacity: 0.6,
         };
+
+      case "blizzard":
+        return {
+          ...baseParticle,
+          width: Math.random() * 6 + 2,
+          height: Math.random() * 6 + 2,
+          color: "#ffffff",
+          duration: Math.random() * 0.8 + 0.5,
+          opacity: Math.random() * 0.8 + 0.2,
+          windOffset: Math.random() * 30 - 15, // Hiệu ứng gió thổi
+        };
+
+      case "hail":
+        return {
+          ...baseParticle,
+          width: Math.random() * 8 + 4,
+          height: Math.random() * 8 + 4,
+          color: "#e5e7eb",
+          duration: Math.random() * 0.6 + 0.4,
+          opacity: 0.9,
+          bounce: true, // Hiệu ứng nảy
+        };
+
+      case "sleet":
+        return {
+          ...baseParticle,
+          width: Math.random() * 3 + 1,
+          height: Math.random() * 8 + 4,
+          color: "#cbd5e1",
+          duration: Math.random() * 1.2 + 0.8,
+          opacity: 0.7,
+        };
+
+      case "freezing_rain":
+        return {
+          ...baseParticle,
+          width: 2,
+          height: 8,
+          color: "#38bdf8",
+          duration: Math.random() * 1.5 + 1,
+          opacity: 0.8,
+          freeze: true, // Hiệu ứng đóng băng
+        };
+
       default:
         return baseParticle;
     }
   };
+
+  // Tạo particle cát cho bão cát
+  const createSandParticle = () => ({
+    id: Math.random(),
+    left: Math.random() * 120 - 20,
+    top: Math.random() * 100,
+    size: Math.random() * 4 + 1,
+    opacity: Math.random() * 0.6 + 0.2,
+    duration: Math.random() * 3 + 2,
+    color: `#${
+      ["d97706", "f59e0b", "fbbf24", "fde047"][Math.floor(Math.random() * 4)]
+    }`,
+    windForce: Math.random() * 40 + 20,
+  });
+
+  // Tạo lá rơi
+  const createLeaf = () => ({
+    id: Math.random(),
+    left: Math.random() * 100,
+    size: Math.random() * 15 + 10,
+    rotation: Math.random() * 360,
+    duration: Math.random() * 4 + 3,
+    opacity: Math.random() * 0.8 + 0.2,
+    color: `#${
+      ["f59e0b", "f97316", "dc2626", "ea580c", "92400e"][
+        Math.floor(Math.random() * 5)
+      ]
+    }`,
+    sway: Math.random() * 30 - 15,
+  });
 
   // Tạo tia chớp
   const createLightningBolt = () => ({
@@ -62,17 +143,19 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
     }
     return segments;
   };
+
   // Tạo lớp sương mù
   const createMistLayer = () => ({
     id: Math.random(),
-    left: Math.random() * 120 - 10, // Từ -10% đến 110%
-    top: Math.random() * 80 + 10, // Từ 10% đến 90%
-    width: Math.random() * 200 + 100, // 100px đến 300px
-    height: Math.random() * 60 + 40, // 40px đến 100px
-    opacity: Math.random() * 0.4 + 0.1, // 0.1 đến 0.5
-    duration: Math.random() * 15 + 10, // 10s đến 25s
+    left: Math.random() * 120 - 10,
+    top: Math.random() * 80 + 10,
+    width: Math.random() * 200 + 100,
+    height: Math.random() * 60 + 40,
+    opacity: Math.random() * 0.4 + 0.1,
+    duration: Math.random() * 15 + 10,
     delay: Math.random() * 5,
   });
+
   // Hiệu ứng sấm chớp
   const triggerThunder = () => {
     setLightningBolt(createLightningBolt());
@@ -93,15 +176,28 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
     }, 280);
   };
 
+  // Hiệu ứng gió mạnh
+  const triggerWindEffect = () => {
+    setWindEffect(true);
+    setTimeout(() => setWindEffect(false), 2000);
+  };
+
   // Quản lý hiệu ứng theo thời tiết
   useEffect(() => {
     let particleInterval;
     let thunderInterval;
-    let sunInterval;
+    let windInterval;
     let mistInterval;
+    let sandInterval;
+    let leafInterval;
+
     // Reset particles
     setParticles([]);
     setMistLayers([]);
+    setSandParticles([]);
+    setLeaves([]);
+
+    // Mưa thường
     if (weatherCondition.includes("rain")) {
       particleInterval = setInterval(() => {
         setParticles((prev) => {
@@ -114,6 +210,7 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
       }, 100);
     }
 
+    // Bão tố
     if (weatherCondition.includes("thunderstorm")) {
       particleInterval = setInterval(() => {
         setParticles((prev) => {
@@ -131,6 +228,8 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
         }
       }, 2000);
     }
+
+    // Sấm chớp
     if (weatherCondition.includes("thunder")) {
       thunderInterval = setInterval(() => {
         if (Math.random() < 0.4) {
@@ -138,6 +237,8 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
         }
       }, 2000);
     }
+
+    // Tuyết rơi
     if (weatherCondition.includes("snow")) {
       particleInterval = setInterval(() => {
         setParticles((prev) => {
@@ -150,6 +251,65 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
       }, 200);
     }
 
+    // Bão tuyết (Blizzard)
+    if (weatherCondition.includes("blizzard")) {
+      particleInterval = setInterval(() => {
+        setParticles((prev) => {
+          const newParticles = [...prev];
+          for (let i = 0; i < 8; i++) {
+            newParticles.push(createParticle("blizzard"));
+          }
+          return newParticles.slice(-60);
+        });
+      }, 60);
+
+      windInterval = setInterval(() => {
+        if (Math.random() < 0.7) {
+          triggerWindEffect();
+        }
+      }, 3000);
+    }
+
+    // Mưa đá
+    if (weatherCondition.includes("hail")) {
+      particleInterval = setInterval(() => {
+        setParticles((prev) => {
+          const newParticles = [...prev];
+          for (let i = 0; i < 4; i++) {
+            newParticles.push(createParticle("hail"));
+          }
+          return newParticles.slice(-35);
+        });
+      }, 120);
+    }
+
+    // Mưa tuyết (Sleet)
+    if (weatherCondition.includes("sleet")) {
+      particleInterval = setInterval(() => {
+        setParticles((prev) => {
+          const newParticles = [...prev];
+          for (let i = 0; i < 3; i++) {
+            newParticles.push(createParticle("sleet"));
+          }
+          return newParticles.slice(-25);
+        });
+      }, 150);
+    }
+
+    // Mưa đóng băng
+    if (weatherCondition.includes("freezing")) {
+      particleInterval = setInterval(() => {
+        setParticles((prev) => {
+          const newParticles = [...prev];
+          for (let i = 0; i < 4; i++) {
+            newParticles.push(createParticle("freezing_rain"));
+          }
+          return newParticles.slice(-30);
+        });
+      }, 130);
+    }
+
+    // Mưa phùn
     if (weatherCondition.includes("drizzle")) {
       particleInterval = setInterval(() => {
         setParticles((prev) => {
@@ -161,15 +321,15 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
         });
       }, 150);
     }
+
+    // Sương mù
     if (weatherCondition.includes("mist") || weatherCondition.includes("fog")) {
-      // Tạo các lớp sương mù ban đầu
       const initialMistLayers = [];
       for (let i = 0; i < 6; i++) {
         initialMistLayers.push(createMistLayer());
       }
       setMistLayers(initialMistLayers);
 
-      // Thêm lớp sương mù mới theo thời gian
       mistInterval = setInterval(() => {
         setMistLayers((prev) => {
           const newLayers = [...prev];
@@ -181,17 +341,68 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
       }, 3000);
     }
 
+    // Bão cát
+    if (
+      weatherCondition.includes("sandstorm") ||
+      weatherCondition.includes("dust")
+    ) {
+      sandInterval = setInterval(() => {
+        setSandParticles((prev) => {
+          const newParticles = [...prev];
+          for (let i = 0; i < 10; i++) {
+            newParticles.push(createSandParticle());
+          }
+          return newParticles.slice(-80);
+        });
+      }, 100);
+
+      windInterval = setInterval(() => {
+        triggerWindEffect();
+      }, 2000);
+    }
+
+    // Gió mạnh
+    if (weatherCondition.includes("windy")) {
+      windInterval = setInterval(() => {
+        if (Math.random() < 0.6) {
+          triggerWindEffect();
+        }
+      }, 4000);
+    }
+
+    // Mùa thu - lá rơi
+    if (
+      weatherCondition.includes("autumn") ||
+      weatherCondition.includes("fall")
+    ) {
+      leafInterval = setInterval(() => {
+        setLeaves((prev) => {
+          const newLeaves = [...prev];
+          for (let i = 0; i < 2; i++) {
+            newLeaves.push(createLeaf());
+          }
+          return newLeaves.slice(-15);
+        });
+      }, 800);
+    }
+
     return () => {
       clearInterval(particleInterval);
       clearInterval(thunderInterval);
-      clearInterval(sunInterval);
+      clearInterval(windInterval);
+      clearInterval(mistInterval);
+      clearInterval(sandInterval);
+      clearInterval(leafInterval);
     };
   }, [weatherCondition]);
+
   const { width } = useWindowSize();
 
   return (
     <div
-      className={`relative overflow-hidden transition-all duration-1000  ${className}`}
+      className={`relative overflow-hidden transition-all duration-1000 ${className} ${
+        windEffect ? "animate-shake" : ""
+      }`}
       style={{
         backgroundColor: "transparent",
         borderRadius: "10px",
@@ -233,20 +444,66 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
         </svg>
       )}
 
-      {/* Particles (mưa/tuyết) */}
+      {/* Particles chính (mưa/tuyết/mưa đá) */}
       {particles.map((particle) => (
         <div
           key={particle.id}
           className="absolute pointer-events-none z-10"
           style={{
-            left: `${particle.left}%`,
+            left: `${particle.left + (particle.windOffset || 0)}%`,
             top: "-10px",
             width: `${particle.width}px`,
             height: `${particle.height}px`,
             backgroundColor: particle.color,
-            borderRadius: weatherCondition === "snow" ? "50%" : "0",
+            borderRadius:
+              weatherCondition.includes("snow") ||
+              weatherCondition.includes("blizzard") ||
+              particle.bounce
+                ? "50%"
+                : "0",
             opacity: particle.opacity,
-            animation: `fall ${particle.duration}s linear infinite`,
+            animation: particle.bounce
+              ? `fallBounce ${particle.duration}s linear infinite`
+              : `fall ${particle.duration}s linear infinite`,
+            boxShadow: particle.freeze ? "0 0 4px #38bdf8" : "none",
+          }}
+        />
+      ))}
+
+      {/* Particles cát cho bão cát */}
+      {sandParticles.map((sand) => (
+        <div
+          key={sand.id}
+          className="absolute pointer-events-none z-12"
+          style={{
+            left: `${sand.left}%`,
+            top: `${sand.top}%`,
+            width: `${sand.size}px`,
+            height: `${sand.size}px`,
+            backgroundColor: sand.color,
+            borderRadius: "50%",
+            opacity: sand.opacity,
+            animation: `sandStorm ${sand.duration}s ease-out infinite`,
+            filter: "blur(1px)",
+          }}
+        />
+      ))}
+
+      {/* Lá rơi mùa thu */}
+      {leaves.map((leaf) => (
+        <div
+          key={leaf.id}
+          className="absolute pointer-events-none z-11"
+          style={{
+            left: `${leaf.left}%`,
+            top: "-20px",
+            width: `${leaf.size}px`,
+            height: `${leaf.size}px`,
+            backgroundColor: leaf.color,
+            opacity: leaf.opacity,
+            borderRadius: "50% 0",
+            transform: `rotate(${leaf.rotation}deg)`,
+            animation: `leafFall ${leaf.duration}s ease-in-out infinite`,
           }}
         />
       ))}
@@ -255,11 +512,8 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
       {(weatherCondition.includes("day") ||
         weatherCondition.includes("sun")) && (
         <>
-          {/* Mặt trời */}
           <div className="pointer-events-none absolute top-20 right-9 w-14 h-14 bg-yellow-400 rounded-full opacity-80 animate-pulse z-20"></div>
           <div className="pointer-events-none absolute top-[75px] right-[25px] w-20 h-20 bg-yellow-300 rounded-full opacity-40 animate-ping z-10"></div>
-
-          {/* Container quay các tia nắng */}
           <div
             className="pointer-events-none absolute top-20 right-8 w-16 h-16 animate-spin-slow z-10 origin-center"
             style={{ transformOrigin: "center center" }}
@@ -277,43 +531,20 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
           </div>
         </>
       )}
+
       {/* Hiệu ứng mặt trăng */}
       {(weatherCondition.includes("night") ||
         weatherCondition.includes("moon")) && (
         <>
-          {/* Mặt trăng chính */}
           <div className="pointer-events-none absolute top-20 right-9 w-14 h-14 bg-gray-100 rounded-full opacity-90 animate-pulse z-20 shadow-lg shadow-gray-300/50">
-            {/* Miệng núi trên mặt trăng */}
             <div className="absolute top-2 left-3 w-2 h-2 bg-gray-300 rounded-full opacity-60"></div>
             <div className="absolute top-4 right-2 w-1.5 h-1.5 bg-gray-300 rounded-full opacity-50"></div>
             <div className="absolute bottom-3 left-2 w-1 h-1 bg-gray-300 rounded-full opacity-40"></div>
           </div>
-
-          {/* Halo ánh sáng mặt trăng */}
           <div className="pointer-events-none absolute top-[70px] right-[25px] w-20 h-20 bg-blue-200 rounded-full opacity-30 animate-ping z-10"></div>
           <div className="pointer-events-none absolute top-[60px] right-[17px] w-24 h-24 bg-blue-100 rounded-full opacity-20 animate-pulse z-5"></div>
 
-          {/* Container quay các tia sáng mặt trăng */}
-          {/* <div
-            className="pointer-events-none absolute top-20 right-8 w-16 h-16 animate-spin-slow z-10 origin-center"
-            style={{
-              transformOrigin: "center center",
-              animationDuration: "20s", // Quay chậm hơn mặt trời
-            }}
-          >
-            {[...Array(12)].map((_, i) => (
-              <div
-                key={i}
-                className="pointer-events-none absolute left-1/2 top-1/4 w-0.5 h-4 bg-blue-200 opacity-50"
-                style={{
-                  transform: `rotate(${i * 30}deg) translateY(-45px)`,
-                  transformOrigin: "center bottom",
-                }}
-              />
-            ))}
-          </div> */}
-
-          {/* Các ngôi sao nhỏ xung quanh */}
+          {/* Ngôi sao */}
           <div className="pointer-events-none absolute top-[200px] right-20 w-1 h-1 bg-white rounded-full opacity-80 animate-pulse z-20"></div>
           <div
             className="pointer-events-none absolute top-[100px] right-14 w-0.5 h-0.5 bg-blue-100 rounded-full opacity-70 animate-pulse z-20"
@@ -323,18 +554,9 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
             className="pointer-events-none absolute top-10 right-32 w-0.5 h-0.5 bg-white rounded-full opacity-60 animate-pulse z-20"
             style={{ animationDelay: "1s" }}
           ></div>
-          <div
-            className="pointer-events-none absolute top-[150px] right-10 w-1 h-1 bg-blue-200 rounded-full opacity-75 animate-pulse z-20"
-            style={{ animationDelay: "1.5s" }}
-          ></div>
-
-          {/* Hiệu ứng ánh sáng mặt trăng lan tỏa */}
-          <div
-            className="pointer-events-none absolute top-16 right-4 w-32 h-32 bg-gradient-radial from-blue-100/20 via-blue-50/10 to-transparent rounded-full opacity-60 animate-pulse z-5"
-            style={{ animationDuration: "4s" }}
-          ></div>
         </>
       )}
+
       {/* Hiệu ứng sương mù */}
       {(weatherCondition.includes("mist") ||
         weatherCondition.includes("fog")) && (
@@ -355,17 +577,35 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
               }}
             />
           ))}
-          {/* Overlay sương mù tổng thể */}
           <div className="absolute inset-0 bg-white opacity-20"></div>
           <div className="absolute inset-0 bg-gray-100 opacity-10"></div>
         </div>
       )}
+
+      {/* Hiệu ứng bão cát */}
+      {(weatherCondition.includes("sandstorm") ||
+        weatherCondition.includes("dust")) && (
+        <div className="absolute inset-0 pointer-events-none z-14">
+          <div className="absolute inset-0 bg-yellow-600 opacity-20"></div>
+          <div className="absolute inset-0 bg-orange-400 opacity-15"></div>
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(45deg, rgba(245,158,11,0.1) 0%, rgba(217,119,6,0.2) 100%)",
+              filter: "blur(2px)",
+            }}
+          ></div>
+        </div>
+      )}
+
       {/* Hiệu ứng mây */}
       {(weatherCondition.includes("thunderstorm") ||
         weatherCondition.includes("thunder") ||
         weatherCondition.includes("rain") ||
         weatherCondition.includes("cloudy") ||
-        weatherCondition.includes("overcast")) && (
+        weatherCondition.includes("overcast") ||
+        weatherCondition.includes("blizzard")) && (
         <div className="absolute inset-0 pointer-events-none z-10">
           <div className="absolute top-20 left-[-100px] w-36 h-16 bg-gray-400 rounded-full opacity-70 animate-cloudMoveSlow"></div>
           <div className="absolute top-[170px] left-[-150px] w-40 h-20 bg-gray-500 rounded-full opacity-60 animate-cloudMoveFast delay-500"></div>
@@ -386,4 +626,5 @@ const WeatherAnimation = ({ weatherCondition, children, className = "" }) => {
     </div>
   );
 };
+
 export default WeatherAnimation;

@@ -111,6 +111,7 @@ const EmptyState = ({
         alignItems: "center",
         height: "100vh",
         width: "100vw",
+        backgroundColor: "white",
       }}
     >
       {/* Icon with subtle animation */}

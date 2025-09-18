@@ -31,8 +31,26 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import EmptyState from "../../../Components/Empty";
 import { changeStandardDateTime } from "../../../helpers";
-import { SunLoading } from "../../../Components/Loading";
+import {
+  CloudyLoading,
+  RainLoading,
+  SnowLoading,
+  SunLoading,
+  ThunderLoading,
+  WindLoading,
+} from "../../../Components/Loading";
+const LoadingAnimation = [
+  <SunLoading />,
+  <RainLoading />,
+  <CloudyLoading />,
+  <ThunderLoading />,
+  <WindLoading />,
+  <SnowLoading />,
+];
 const WeatherDashboard = () => {
+  const [randomVal] = useState(
+    Math.floor(Math.random() * LoadingAnimation.length)
+  );
   const weatherData = useSelector((state) => state.weather.value);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -101,7 +119,7 @@ const WeatherDashboard = () => {
   };
 
   if (loading) {
-    return <SunLoading />;
+    return LoadingAnimation[randomVal];
   }
 
   const hourlyData = weatherData

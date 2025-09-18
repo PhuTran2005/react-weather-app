@@ -1,195 +1,326 @@
 import React from "react";
 import {
   AlertTriangle,
-  Cloud,
-  Wind,
-  Thermometer,
-  Eye,
+  Clock,
   MapPin,
-  RefreshCw,
+  Info,
+  Shield,
+  Calendar,
+  FileText,
 } from "lucide-react";
+import "./WeatherAlerts.scss";
 import { useSelector } from "react-redux";
 import EmptyState from "../../../Components/Empty";
 import { useNavigate } from "react-router-dom";
 
 const WeatherAlerts = () => {
-  const weatherData = useSelector((state) => state.weather.value);
+  // Lấy dữ liệu từ Redux (hoặc dùng mẫu nếu test)
+  const alertsData = useSelector((state) => state.weather.value);
 
   const navigate = useNavigate();
-  // Mock data dựa trên cấu trúc bạn cung cấp
   const handleChoose = () => {
-    //Chuyển đến trang thời tiết
     navigate("/weather-app");
   };
-  const getSeverityConfig = (severity) => {
-    const configs = {
-      warning: {
-        color: "bg-red-500",
-        bgColor: "bg-red-50",
-        borderColor: "border-red-200",
-        textColor: "text-red-800",
-        icon: AlertTriangle,
-        label: "Cảnh báo",
-      },
-      watch: {
-        color: "bg-orange-500",
-        bgColor: "bg-orange-50",
-        borderColor: "border-orange-200",
-        textColor: "text-orange-800",
-        icon: Eye,
-        label: "Theo dõi",
-      },
-      advisory: {
-        color: "bg-yellow-500",
-        bgColor: "bg-yellow-50",
-        borderColor: "border-yellow-200",
-        textColor: "text-yellow-800",
-        icon: Thermometer,
-        label: "Khuyến cáo",
-      },
-    };
-    return configs[severity] || configs.advisory;
+  const getSeverityColor = (severity) => {
+    switch (severity?.toLowerCase()) {
+      case "minor":
+        return "alert-severity--minor";
+      case "moderate":
+        return "alert-severity--moderate";
+      case "major":
+        return "alert-severity--major";
+      case "severe":
+        return "alert-severity--severe";
+      default:
+        return "alert-severity--moderate";
+    }
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleString("vi-VN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  const getUrgencyColor = (urgency) => {
+    switch (urgency?.toLowerCase()) {
+      case "immediate":
+        return "alert-urgency--immediate";
+      case "expected":
+        return "alert-urgency--expected";
+      case "future":
+        return "alert-urgency--future";
+      default:
+        return "alert-urgency--expected";
+    }
   };
+
+  const getCertaintyIcon = (certainty) => {
+    switch (certainty?.toLowerCase()) {
+      case "very likely":
+      case "likely":
+        return (
+          <Shield className="alert-certainty__icon alert-certainty__icon--high" />
+        );
+      case "possible":
+        return (
+          <Info className="alert-certainty__icon alert-certainty__icon--medium" />
+        );
+      case "unlikely":
+        return (
+          <AlertTriangle className="alert-certainty__icon alert-certainty__icon--low" />
+        );
+      default:
+        return <Info className="alert-certainty__icon" />;
+    }
+  };
+
+  const getEventTypeIcon = (event) => {
+    const eventLower = event?.toLowerCase() || "";
+    if (eventLower.includes("flood"))
+      return (
+        <AlertTriangle className="alert-event__icon alert-event__icon--flood" />
+      );
+    if (eventLower.includes("storm") || eventLower.includes("wind"))
+      return (
+        <AlertTriangle className="alert-event__icon alert-event__icon--storm" />
+      );
+    if (eventLower.includes("heat") || eventLower.includes("fire"))
+      return (
+        <AlertTriangle className="alert-event__icon alert-event__icon--heat" />
+      );
+    if (
+      eventLower.includes("cold") ||
+      eventLower.includes("freeze") ||
+      eventLower.includes("winter")
+    )
+      return (
+        <AlertTriangle className="alert-event__icon alert-event__icon--cold" />
+      );
+    return <AlertTriangle className="alert-event__icon" />;
+  };
+
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    return {
+      date: date.toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      time: date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      }),
+    };
+  };
+
+  const parseAreas = (areas) => {
+    if (typeof areas === "string") {
+      return areas
+        .split(";")
+        .map((area) => area.trim())
+        .filter((area) => area.length > 0);
+    }
+    return Array.isArray(areas) ? areas : [areas];
+  };
+
+  if (!alertsData) {
+    return (
+      <EmptyState
+        title="Cant find the location data"
+        description="Please choose location !"
+        type="products"
+        action={handleChoose}
+        actionText="Choose your location now !"
+        size="large"
+      />
+    );
+  }
 
   return (
-    <>
-      {weatherData === null || weatherData.alerts.alert.length === 0 ? (
-        <EmptyState
-          title="Cant find the location data"
-          description="Please choose location !"
-          type="products"
-          action={handleChoose}
-          actionText="Choose your location now !"
-          size="large"
-        />
-      ) : (
-        <>
-          <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
-            {/* Main Content */}
-            {/* Header */}
-            <div className="bg-white shadow-lg border-b border-gray-200">
-              <div className="max-w-6xl mx-auto px-4 py-6">
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-blue-500 rounded-lg">
-                      <Cloud className="w-8 h-8 text-white" />
-                    </div>
-                    <div>
-                      <h1 className="text-3xl font-bold text-gray-800">
-                        Weather Alerts
-                      </h1>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div className="weather-alerts">
+      <div className="weather-alerts__container">
+        <div className="weather-alerts__header">
+          <AlertTriangle className="weather-alerts__header-icon" />
+          <div className="weather-alerts__header-content">
+            <h1 className="weather-alerts__title">Weather Alerts</h1>
+            <p className="weather-alerts__subtitle">
+              {alertsData.alerts.alert.length} active alert
+              {alertsData.alerts.alert.length !== 1 ? "s" : ""}
+            </p>
+          </div>
+        </div>
 
-            <div className="max-w-6xl mx-auto px-4 pb-8">
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    Các Cảnh Báo Hiện Tại
-                  </h2>
-                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                    {weatherData.alerts.alert.length} cảnh báo
-                  </span>
-                </div>
+        <div className="weather-alerts__list">
+          {alertsData.alerts?.alert?.length > 0 && (
+            <>
+              {alertsData.alerts.alert.map((alert, index) => {
+                const effective = formatDateTime(alert.effective);
+                const expires = formatDateTime(alert.expires);
+                const areas = parseAreas(alert.areas);
 
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {weatherData.alerts.alert.map((alert) => {
-                    const config = getSeverityConfig(alert.severity);
-                    const IconComponent = config.icon;
-
-                    return (
-                      <div
-                        key={alert.id}
-                        className={`${config.bgColor} ${config.borderColor} border-2 rounded-xl p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1`}
-                      >
-                        {/* Header */}
-                        <div className="flex items-start justify-between mb-4">
-                          <div className={`${config.color} p-2 rounded-lg`}>
-                            <IconComponent className="w-6 h-6 text-white" />
-                          </div>
-                          <span
-                            className={`${config.textColor} bg-white px-2 py-1 rounded-full text-xs font-semibold`}
-                          >
-                            {config.label}
-                          </span>
+                return (
+                  <div
+                    key={index}
+                    className={`alert-card ${getSeverityColor(alert.severity)}`}
+                  >
+                    {/* Alert Header */}
+                    <div className="alert-card__header">
+                      <div className="alert-card__title-section">
+                        {getEventTypeIcon(alert.event)}
+                        <div className="alert-card__title-content">
+                          <h2 className="alert-card__title">{alert.event}</h2>
+                          <p className="alert-card__headline">
+                            {alert.headline}
+                          </p>
                         </div>
-
-                        {/* Content */}
-                        <h3
-                          className={`${config.textColor} text-lg font-bold mb-3`}
+                      </div>
+                      <div className="alert-card__badges">
+                        <span
+                          className={`alert-badge alert-badge--severity ${getSeverityColor(
+                            alert.severity
+                          )}`}
                         >
-                          {alert.title}
-                        </h3>
+                          {alert.severity}
+                        </span>
+                        <span
+                          className={`alert-badge alert-badge--urgency ${getUrgencyColor(
+                            alert.urgency
+                          )}`}
+                        >
+                          {alert.urgency}
+                        </span>
+                        <span className="alert-badge alert-badge--msgtype">
+                          {alert.msgtype}
+                        </span>
+                      </div>
+                    </div>
 
-                        <p className="text-gray-700 text-sm mb-4 leading-relaxed">
-                          {alert.description}
-                        </p>
-
-                        {/* Time Info */}
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center text-sm text-gray-600">
-                            <span className="font-medium w-16">Từ:</span>
-                            <span>{formatDate(alert.start_date)}</span>
-                          </div>
-                          <div className="flex items-center text-sm text-gray-600">
-                            <span className="font-medium w-16">Đến:</span>
-                            <span>{formatDate(alert.end_date)}</span>
+                    {/* Metadata */}
+                    <div className="alert-card__metadata">
+                      <div className="alert-metadata__grid">
+                        <div className="alert-metadata__item">
+                          <Shield className="alert-metadata__icon" />
+                          <div className="alert-metadata__content">
+                            <span className="alert-metadata__label">
+                              Category
+                            </span>
+                            <span className="alert-metadata__value">
+                              {alert.category}
+                            </span>
                           </div>
                         </div>
+                        <div className="alert-metadata__item">
+                          {getCertaintyIcon(alert.certainty)}
+                          <div className="alert-metadata__content">
+                            <span className="alert-metadata__label">
+                              Certainty
+                            </span>
+                            <span className="alert-metadata__value">
+                              {alert.certainty}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                        {/* Regions */}
-                        {alert.regions && alert.regions.length > 0 && (
-                          <div>
-                            <h4 className="text-sm font-semibold text-gray-700 mb-2">
-                              Khu vực ảnh hưởng:
-                            </h4>
-                            <div className="flex flex-wrap gap-1">
-                              {alert.regions.map((region, index) => (
-                                <span
-                                  key={index}
-                                  className="bg-white text-gray-700 px-2 py-1 rounded text-xs border"
-                                >
-                                  {region}
-                                </span>
-                              ))}
+                    {/* Timing */}
+                    <div className="alert-card__timing">
+                      <div className="alert-timing">
+                        <div className="alert-timing__item">
+                          <Calendar className="alert-timing__icon" />
+                          <div className="alert-timing__content">
+                            <span className="alert-timing__label">
+                              Effective
+                            </span>
+                            <div className="alert-timing__datetime">
+                              <span className="alert-timing__date">
+                                {effective.date}
+                              </span>
+                              <span className="alert-timing__time">
+                                {effective.time}
+                              </span>
                             </div>
                           </div>
-                        )}
+                        </div>
+                        <div className="alert-timing__item">
+                          <Clock className="alert-timing__icon" />
+                          <div className="alert-timing__content">
+                            <span className="alert-timing__label">Expires</span>
+                            <div className="alert-timing__datetime">
+                              <span className="alert-timing__date">
+                                {expires.date}
+                              </span>
+                              <span className="alert-timing__time">
+                                {expires.time}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-            {/* Footer */}
-            <footer className="bg-gray-800 text-white py-6">
-              <div className="max-w-6xl mx-auto px-4 text-center">
-                <p className="text-gray-300">
-                  Dữ liệu thời tiết được cung cấp bởi Weatherbit.io
-                </p>
-                <p className="text-sm text-gray-400 mt-1">
-                  Cập nhật lần cuối: {new Date().toLocaleString("vi-VN")}
-                </p>
-              </div>
-            </footer>
-          </div>
-        </>
-      )}
-    </>
+                    </div>
+
+                    {/* Areas */}
+                    <div className="alert-card__areas">
+                      <MapPin className="alert-areas__icon" />
+                      <div className="alert-areas__content">
+                        <span className="alert-areas__label">
+                          Affected Areas
+                        </span>
+                        <div className="alert-areas__tags">
+                          {areas.map((area, areaIndex) => (
+                            <span key={areaIndex} className="alert-area-tag">
+                              {area}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Note */}
+                    {alert.note && (
+                      <div className="alert-card__note">
+                        <FileText className="alert-note__icon" />
+                        <div className="alert-note__content">
+                          <span className="alert-note__label">Source</span>
+                          <p className="alert-note__text">{alert.note}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Description */}
+                    <div className="alert-card__description">
+                      <h3 className="alert-description__title">Description</h3>
+                      <p className="alert-description__text">{alert.desc}</p>
+                    </div>
+
+                    {/* Instructions */}
+                    <div className="alert-card__instruction">
+                      <div className="alert-instruction__header">
+                        <Info className="alert-instruction__icon" />
+                        <h3 className="alert-instruction__title">
+                          Safety Instructions
+                        </h3>
+                      </div>
+                      <p className="alert-instruction__text">
+                        {alert.instruction}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          )}
+          {alertsData.alerts?.alert?.length <= 0 && (
+            <EmptyState
+              title="Not alerts now"
+              description="ALerts is empty !"
+              type="products"
+              actionText="Navigate to home !"
+              size="large"
+              action={handleChoose}
+            />
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

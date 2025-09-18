@@ -59,8 +59,8 @@ const WeatherCurrentLocation = () => {
           localStorage.setItem("my_location", JSON.stringify(fallback));
 
           Swal.fire({
-            title: "Không lấy được vị trí",
-            text: "Ứng dụng sẽ dùng vị trí mặc định.",
+            title: "Can't take the location",
+            text: "App will take the default location.",
             icon: "warning",
             confirmButtonText: "OK",
           }).then(() => {
@@ -79,8 +79,8 @@ const WeatherCurrentLocation = () => {
       localStorage.setItem("my_location", JSON.stringify(fallback));
 
       Swal.fire({
-        title: "Trình duyệt không hỗ trợ",
-        text: "Ứng dụng sẽ dùng vị trí mặc định.",
+        title: "Browser not suport",
+        text: "App will take the default location.",
         icon: "info",
         confirmButtonText: "OK",
       }).then(() => {

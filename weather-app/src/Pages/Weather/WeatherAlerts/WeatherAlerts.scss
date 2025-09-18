@@ -1,0 +1,548 @@
+.weather-alerts {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+  padding: 20px;
+}
+
+.weather-alerts__container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.weather-alerts__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  justify-content: center;
+  text-align: center;
+}
+
+.weather-alerts__header-icon {
+  width: 36px;
+  height: 36px;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.weather-alerts__header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.weather-alerts__title {
+  color: #ffffff;
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.weather-alerts__subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  margin: 4px 0 0 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.weather-alerts__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+.alert-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-left: 6px solid #3b82f6;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.alert-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+.alert-card.alert-severity--minor {
+  border-left-color: #10b981;
+}
+
+.alert-card.alert-severity--moderate {
+  border-left-color: #f59e0b;
+}
+
+.alert-card.alert-severity--major {
+  border-left-color: #ef4444;
+}
+
+.alert-card.alert-severity--severe {
+  border-left-color: #dc2626;
+}
+
+.alert-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.alert-card__title-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-event__icon {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.alert-event__icon--flood {
+  color: #1e40af;
+}
+
+.alert-event__icon--storm {
+  color: #7c3aed;
+}
+
+.alert-event__icon--heat {
+  color: #dc2626;
+}
+
+.alert-event__icon--cold {
+  color: #06b6d4;
+}
+
+.alert-card__title-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.alert-card__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+  line-height: 1.25;
+}
+
+.alert-card__headline {
+  color: #6b7280;
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.alert-card__badges {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.alert-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.alert-badge--severity.alert-severity--minor {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.alert-badge--severity.alert-severity--moderate {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.alert-badge--severity.alert-severity--major {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.alert-badge--severity.alert-severity--severe {
+  background-color: #fecaca;
+  color: #7f1d1d;
+}
+
+.alert-badge--urgency.alert-urgency--immediate {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.alert-badge--urgency.alert-urgency--expected {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.alert-badge--urgency.alert-urgency--future {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+
+.alert-badge--msgtype {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.alert-card__metadata {
+  margin-bottom: 20px;
+}
+
+.alert-metadata__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.alert-metadata__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  background-color: #f8fafc;
+  border-radius: 10px;
+}
+
+.alert-metadata__icon,
+.alert-certainty__icon {
+  width: 18px;
+  height: 18px;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.alert-certainty__icon--high {
+  color: #059669;
+}
+
+.alert-certainty__icon--medium {
+  color: #d97706;
+}
+
+.alert-certainty__icon--low {
+  color: #dc2626;
+}
+
+.alert-metadata__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-metadata__label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.alert-metadata__value {
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 600;
+}
+
+.alert-card__timing {
+  margin-bottom: 24px;
+}
+
+.alert-timing {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.alert-timing__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background-color: #f1f5f9;
+  border-radius: 12px;
+}
+
+.alert-timing__icon {
+  width: 20px;
+  height: 20px;
+  color: #64748b;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.alert-timing__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.alert-timing__label {
+  font-size: 0.8rem;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.alert-timing__datetime {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.alert-timing__date {
+  font-size: 0.9rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.alert-timing__time {
+  font-size: 0.85rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.alert-card__areas {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding: 18px;
+  background-color: #f8fafc;
+  border-radius: 12px;
+}
+
+.alert-areas__icon {
+  width: 22px;
+  height: 22px;
+  color: #6b7280;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.alert-areas__content {
+  flex: 1;
+}
+
+.alert-areas__label {
+  font-size: 0.9rem;
+  color: #374151;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.alert-areas__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.alert-area-tag {
+  background-color: #3b82f6;
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.alert-card__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background-color: #fffbeb;
+  border-radius: 12px;
+  border: 1px solid #fed7aa;
+}
+
+.alert-note__icon {
+  width: 18px;
+  height: 18px;
+  color: #d97706;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.alert-note__content {
+  flex: 1;
+}
+
+.alert-note__label {
+  font-size: 0.8rem;
+  color: #92400e;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.alert-note__text {
+  color: #92400e;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.alert-card__description {
+  margin-bottom: 24px;
+}
+
+.alert-description__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 12px 0;
+}
+
+.alert-description__text {
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.alert-card__instruction {
+  background-color: #eff6ff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #bfdbfe;
+}
+
+.alert-instruction__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.alert-instruction__icon {
+  width: 20px;
+  height: 20px;
+  color: #3b82f6;
+}
+
+.alert-instruction__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin: 0;
+}
+
+.alert-instruction__text {
+  color: #1e40af;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .weather-alerts {
+    padding: 16px;
+  }
+
+  .weather-alerts__title {
+    font-size: 1.875rem;
+  }
+
+  .alert-card {
+    padding: 20px;
+  }
+
+  .alert-card__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .alert-card__badges {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .alert-metadata__grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .alert-timing {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .alert-card__areas {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .alert-card__title {
+    font-size: 1.5rem;
+  }
+
+  .alert-card__note {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .weather-alerts {
+    padding: 12px;
+  }
+
+  .alert-card {
+    padding: 16px;
+  }
+
+  .weather-alerts__title {
+    font-size: 1.625rem;
+  }
+
+  .alert-card__title {
+    font-size: 1.25rem;
+  }
+
+  .alert-areas__tags {
+    gap: 6px;
+  }
+
+  .alert-area-tag {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+
+  .alert-metadata__item {
+    padding: 12px;
+  }
+
+  .alert-timing__item {
+    padding: 14px;
+  }
+}
