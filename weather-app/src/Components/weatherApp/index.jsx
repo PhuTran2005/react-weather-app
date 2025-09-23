@@ -4,7 +4,7 @@ import WeatherAbout from "./WeatherAbout";
 import WeatherContent from "./WeatherContent";
 import WeatherDateTime from "./WeatherDateTime";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import WeatherAnimation from "../Animations/WeatherAnimation";
 import NightEffect from "../Mode/Night";
 import DayEffect from "../Mode/Day";
@@ -19,8 +19,16 @@ import {
 } from "../Loading";
 import SlidingSidebar from "../SideBar";
 import ModernSidebar from "../SideBar";
+import { setWeatherData } from "../../features/Weather/weatherSlice";
+import { Navigate } from "react-router-dom";
+import { getImageFromUnsplash } from "../../services/locationService";
+import {
+  getAirPollutionbyLocation,
+  getWeatherbyLocation,
+} from "../../services/weatherService";
 const WeatherApp = () => {
   const weatherData = useSelector((state) => state.weather.value);
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [randomVal, setRandomVal] = useState(0);
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -54,8 +62,36 @@ const WeatherApp = () => {
     name: weatherData ? weatherData.current.condition.text : "Condition",
     avatar: weatherData ? weatherData.current.condition.icon : defaultImg,
   };
+  const fetchData = async (location) => {
+    try {
+      const data = await getWeatherbyLocation(location.lat, location.lng);
+      const airPollutionData = await getAirPollutionbyLocation(
+        location.lat,
+        location.lng
+      );
+      console.log("Air Pollution Data:", airPollutionData);
+      const locationImg = await getImageFromUnsplash(data.name);
 
-  useEffect(() => {}, []);
+      dispatch(
+        setWeatherData({
+          ...data,
+          locationImg,
+          airPollution: airPollutionData.list[0],
+        })
+      );
+    } catch (error) {
+      console.error("Error fetching weather data:", error);
+    }
+  };
+  useEffect(() => {
+    let saved = localStorage.getItem("my_location");
+    if (saved) {
+      const location = JSON.parse(saved);
+      turnOnLoading();
+      fetchData(location);
+      turnOffLoading();
+    }
+  }, []);
   return (
     <>
       <div className="weatherApp ">

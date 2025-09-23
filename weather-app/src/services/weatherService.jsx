@@ -100,3 +100,4 @@ export const getAirPollutionbyLocation = async (lat, lng) => {
     return null;
   }
 };
+// export const getFullData = async (lat, lng) => {};
