@@ -85,7 +85,7 @@ const WeatherApp = () => {
   };
   useEffect(() => {
     let saved = localStorage.getItem("my_location");
-    if (saved) {
+    if (saved && weatherData === null) {
       const location = JSON.parse(saved);
       turnOnLoading();
       fetchData(location);
